@@ -56,21 +56,18 @@ EOF
     exit
 }
 
+run() {
 if [ -t 0 ]; then
     echo Running interactively, checking for arguments... >&2
     if [ "$*" ]; then
 	echo Arguments present... >&2
-	if [ "$*"="--help" ]; then
-	    printhelp
+	if [ -f "$*" ]; then
+	    echo Uploading the contents of "$*"... >&2
+	    cat "$*"
 	else
-	    if [ -f "$*" ]; then
-		echo Uploading the contents of "$*"... >&2
-		cat "$*"
-	    else
-		echo Uploading the text: \""$*"\"... >&2
-		echo "$*"
-	    fi | curl -F 'sprunge=<-' http://sprunge.us
-	fi
+	    echo Uploading the text: \""$*"\"... >&2
+	    echo "$*"
+	fi | curl -F 'sprunge=<-' http://sprunge.us
     else
 	echo No arguments found, printing USAGE and exiting. >&2
 	printusage
@@ -81,3 +78,9 @@ else
 	echo $line
     done | curl -F 'sprunge=<-' http://sprunge.us
 fi
+}
+
+case "$1" in
+    -h|--help)    printhelp ;;
+    *)            run ;;
+esac
