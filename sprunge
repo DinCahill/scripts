@@ -9,14 +9,13 @@ usage() {
     cat <<EOF
 
 USAGE
-  $0 filename.txt
-  $0 text string
-  $0 < filename.txt
-  piped_data | $0
+  $0 [OPTION] filename.txt
+  $0 [OPTION] text string
+  $0 [OPTION] < filename.txt
+  piped_data | $0 [OPTION]
 
 Try '$0 --help' for more information.
 EOF
-    exit
 }
 
 printhelp() {
@@ -30,10 +29,14 @@ DESCRIPTION
   Upload data and fetch URL from the pastebin http://sprunge.us
 
 USAGE
-  $0 filename.txt
-  $0 text string
-  $0 < filename.txt
-  piped_data | $0
+  $0 [OPTION] filename.txt
+  $0 [OPTION] text string
+  $0 [OPTION] < filename.txt
+  piped_data | $0 [OPTION]
+
+OPTIONS
+  -h, --help        print this help.
+  -c, --copy        copy sprunge link to X clipboard.
 
 NOTES
 --------------------------------------------------------------------------
@@ -82,5 +85,6 @@ fi
 
 case "$1" in
     -h|--help)    printhelp ;;
+    -c|--copy)    run "${@:2}" | xclip -sel clip; echo "Copied sprunge link to clipboard."  ;;
     *)            run "$@" ;;
 esac
