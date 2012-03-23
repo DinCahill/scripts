@@ -82,5 +82,5 @@ fi
 
 case "$1" in
     -h|--help)    printhelp ;;
-    *)            run ;;
+    *)            run "$@" ;;
 esac
